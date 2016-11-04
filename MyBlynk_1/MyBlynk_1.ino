@@ -1,5 +1,6 @@
 /**************************************************************
   * Эксперименты с Blynk для дачи   04.11.2016
+  * Поддерживает 2 датчика, можно больше
  **************************************************************/
 
 //#define BLYNK_PRINT Serial    // Comment this out to disable prints and save space
@@ -14,7 +15,6 @@ int s_qnt = 1;
 void setup() {
 //  Serial.begin(9600);
   Blynk.begin(auth);
-  
 }
 
 void loop() {
@@ -46,8 +46,7 @@ void CelsiusForChanal() {
   for ( i = 0; i < 9; i++) {         
     data[i] = ds.read();
    }
-  
-  int16_t raw = (data[1] << 8) | data[0];
+ int16_t raw = (data[1] << 8) | data[0];
      byte cfg = (data[4] & 0x60);
      if (cfg == 0x00) raw = raw & ~7;  // 9 bit resolution, 93.75 ms
      else if (cfg == 0x20) raw = raw & ~3; // 10 bit res, 187.5 ms
