@@ -2,9 +2,10 @@
   * Эксперименты с Blynk для дачи   04.11.2016
   * Поддерживает 2 датчика, можно больше
   * Подключен watch_dog
+  * сократил количество отправок в секунду, иначе плату отключали, 
+  * подключил к выходу реле 4 вход, чтобы видеть состояние реле на виджете LED
  **************************************************************/
 
-#include <UIPEthernet.h>
 #include <BlynkSimpleUIPEthernet.h>
 #include <OneWire.h>
 #include <avr/wdt.h>
@@ -13,7 +14,7 @@ char auth[] = "6457680142ad4714b2d38da6feda1ef4";
 OneWire  ds(6);  // on pin 6 (a 4.7K resistor is necessary)
 int s_qnt = 1;
 int relaystatus = 4;
-boolean relay_led = LOW;
+
 
 void setup() {
 //  Serial.begin(9600);
@@ -34,15 +35,8 @@ void loop() {
 }
 
 void led(){
-  boolean led_tmp = digitalRead(relaystatus);
-    if (led_tmp && !relay_led) {
-      relay_led = HIGH;
-      Blynk.virtualWrite(V10, HIGH);
-    }
-     if (!led_tmp && relay_led) {
-      relay_led = LOW;
-      Blynk.virtualWrite(V10, LOW);
-    }
+    if (digitalRead(relaystatus)) Blynk.virtualWrite(V10, HIGH);
+    if (!digitalRead(relaystatus)) Blynk.virtualWrite(V10, LOW);
 }
 
 
@@ -84,4 +78,3 @@ void CelsiusForChanal() {
      }
      s_qnt++;
   }
-
