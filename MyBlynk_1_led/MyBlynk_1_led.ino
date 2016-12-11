@@ -28,17 +28,18 @@ void loop() {
   Blynk.run();
   if (millis() / 500 % 2) {
     CelsiusForChanal();
-    led();
+     if (digitalRead(relaystatus)) Blynk.virtualWrite(V10, HIGH);
+     else Blynk.virtualWrite(V10, LOW);
   }
   
   wdt_reset();
 }
-
+/*
 void led(){
     if (digitalRead(relaystatus)) Blynk.virtualWrite(V10, HIGH);
     if (!digitalRead(relaystatus)) Blynk.virtualWrite(V10, LOW);
 }
-
+*/
 
 void CelsiusForChanal() {
   byte i;
